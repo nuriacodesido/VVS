@@ -28,13 +28,13 @@ active proctype V() {
 
 inline wait(sem) {
 	atomic {
-		sem;
-		sem=false
+		sem>0;
+		sem--;
 	}
 }
 
 inline signal(sem) {
-	sem=true
+	sem++;
 }
 
 active proctype H() {
