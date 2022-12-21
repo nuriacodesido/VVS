@@ -1,49 +1,34 @@
-#define i 2
-
 mtype = {red, yellow, green};
-mtype light[i]=red;
-bool mutex=1;
+mtype lightv=red;
+mtype lighth=red;
 
-
-inline change_light(i){
-	wait(mutex);
+inline change_light(light1, light2){
 	if 
-	:: light[i]==red -> light[i]=green
-	:: light[i]==yellow -> ligh[i]t=red
-	:: light[i]==green -> light[i]=yellow
-	fi;
-	signal(mutex);
+		:: light1==red -> 
+			atomic {
+				light2==red;
+				light1=green;
+				}
+		:: light1==yellow -> light1=red
+		:: light1==green -> light1=yellow
+		fi
 }
-
 
 active proctype V() {
-	atomic{
-		do
-			change_light(0);
-			printf("The light vertical is now %e\n",lightv)
-		od;	
-	}
+	do,
+	:: cs: change_light(lightv,lighth);
+	printf("The light vertical is now %e\n",lightv)
+	od
+	    	
 }
 
 
-inline wait(sem) {
-	atomic {
-		sem>0;
-		sem--;
-	}
-}
-
-inline signal(sem) {
-	sem++;
-}
 
 active proctype H() {
-	atomic{
-		do
-			change_light(1);
-			printf("The light horizontal is now %e\n",lighth)
-		od;	
-	}
+	do 
+	:: cs: change_light(lighth,lightv);
+	printf("The light horizontal is now %e\n",lighth)
+	od
 }
 
 
