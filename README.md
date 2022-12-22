@@ -37,8 +37,6 @@ Nuria Codesido Iglesias
     
     3.-Liveness: check whether both traffic lights can reach each color infinitely often. Explain the obtained result.
 
-    
-    		#spin -a -f '!<>(V@cs && H@cs)' ejemplo.pml
     		spin -a -f '![]<>lightv' ejemplo.pml
 		#gcc -o pan pan.c
 		#pan -a -f
